@@ -1,22 +1,20 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from views.music_views import router as music_router
+from services.songs_services import Music
 
+music_services = Music()
 app = FastAPI()
-origins = ["*"]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 @app.get("/")
-async def root():
-    return {"message": "Welcome to the Music Stream API"}
+def Root():
+    return {"message": "bienvenido a mi app"}
 
 
-app.include_router(music_router)
+@app.get("/music")
+def get_all_songs():
+    return music_services.get_music()
+
+
+@app.get("/music/{name}")
+def get_song(name):
+    return music_services.get_song_by_name(name)
