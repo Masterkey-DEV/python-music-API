@@ -14,4 +14,9 @@ app.add_middleware(
 )
 
 
+@app.get("/")
+async def root():
+    return {"message": "Welcome to the Music Stream API"}
+
+
 app.include_router(music_router)
